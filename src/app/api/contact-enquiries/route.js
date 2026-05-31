@@ -1,4 +1,4 @@
-import connectDB from "@/lib/mongodb";
+import connectDB, { getDatabaseErrorResponse } from "@/lib/mongodb";
 import ContactEnquiry from "@/models/ContactEnquiry";
 
 export async function POST(request) {
@@ -25,9 +25,11 @@ export async function POST(request) {
     return Response.json({ success: true, message: "Enquiry submitted." });
   } catch (error) {
     console.error("Contact enquiry error:", error);
+    const errorResponse = getDatabaseErrorResponse(error);
+
     return Response.json(
-      { success: false, message: "Something went wrong." },
-      { status: 500 }
+      { success: false, message: errorResponse.message },
+      { status: errorResponse.status }
     );
   }
 }

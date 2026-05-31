@@ -1,4 +1,4 @@
-import connectDB from "@/lib/mongodb";
+import connectDB, { getDatabaseErrorResponse } from "@/lib/mongodb";
 import ServiceEnquiry from "@/models/ServiceEnquiry";
 
 export async function POST(request) {
@@ -37,9 +37,11 @@ export async function POST(request) {
     return Response.json({ success: true, message: "Service request submitted." });
   } catch (error) {
     console.error("Service enquiry error:", error);
+    const errorResponse = getDatabaseErrorResponse(error);
+
     return Response.json(
-      { success: false, message: "Something went wrong." },
-      { status: 500 }
+      { success: false, message: errorResponse.message },
+      { status: errorResponse.status }
     );
   }
 }
