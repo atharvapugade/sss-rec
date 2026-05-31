@@ -27,6 +27,14 @@ const countryCodes = [
   { label: "Thailand", code: "+66" },
 ];
 
+function getSubmitErrorMessage(error) {
+  if (error?.name === "TypeError" || error?.message === "Failed to fetch") {
+    return "Network changed while submitting. Please check your internet and try again.";
+  }
+
+  return error?.message || "Something went wrong.";
+}
+
 export default function HireServiceModal({
   serviceName,
   buttonLabel,
@@ -101,7 +109,7 @@ export default function HireServiceModal({
       setSelectedService(initialService);
       setIsSubmitted(true);
     } catch (error) {
-      setStatusMessage(error.message || "Something went wrong.");
+      setStatusMessage(getSubmitErrorMessage(error));
     } finally {
       setIsSubmitting(false);
     }
@@ -129,7 +137,9 @@ export default function HireServiceModal({
                 aria-modal="true"
                 aria-labelledby="hire-success-title"
               >
-                <div className="hire-success-icon" aria-hidden="true">✓</div>
+                <div className="hire-success-icon" aria-hidden="true">
+                  &#10003;
+                </div>
                 <h2 id="hire-success-title">Request submitted successfully</h2>
                 <p>Our team will contact you shortly.</p>
                 <button
