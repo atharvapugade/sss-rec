@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { usePathname } from "next/navigation";
 
 const navLinks = [
@@ -12,6 +13,7 @@ const navLinks = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <nav className="site-navbar">
@@ -53,6 +55,37 @@ export default function Navbar() {
             );
           })}
         </div>
+
+        <button
+          type="button"
+          className={`site-navbar-toggle ${isMenuOpen ? "is-open" : ""}`}
+          aria-label="Toggle navigation menu"
+          aria-expanded={isMenuOpen}
+          onClick={() => setIsMenuOpen((current) => !current)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+      </div>
+
+      <div className={`site-mobile-menu ${isMenuOpen ? "is-open" : ""}`}>
+        {navLinks.map((link) => {
+          const isActive = pathname === link.href;
+
+          return (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`site-mobile-link ${
+                isActive ? "site-mobile-link-active" : ""
+              }`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {link.label}
+            </Link>
+          );
+        })}
       </div>
     </nav>
   );

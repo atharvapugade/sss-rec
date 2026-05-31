@@ -15,34 +15,32 @@ const container = {
   show: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.16,
-      delayChildren: 0.12,
+      staggerChildren: 0.08,
+      delayChildren: 0.04,
     },
   },
 };
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 30, filter: "blur(8px)" },
+  hidden: { opacity: 0, y: 18 },
   show: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
     transition: {
-      duration: 0.82,
-      ease: [0.25, 0.1, 0.25, 1],
+      duration: 0.48,
+      ease: "easeOut",
     },
   },
 };
 
 const fadeScale = {
-  hidden: { opacity: 0, y: 28, scale: 0.94 },
+  hidden: { opacity: 0, y: 18 },
   show: {
     opacity: 1,
     y: 0,
-    scale: 1,
     transition: {
-      duration: 0.95,
-      ease: [0.25, 0.1, 0.25, 1],
+      duration: 0.52,
+      ease: "easeOut",
     },
   },
 };
@@ -93,7 +91,7 @@ export default function Hero() {
             className="hero-actions flex flex-wrap items-center gap-4"
           >
             <motion.div
-              whileHover={{ y: -3, scale: 1.04 }}
+              whileHover={{ y: -2 }}
               whileTap={{ scale: 0.97 }}
             >
               <Link href="/services" className="btn-primary btn-compact">
@@ -102,7 +100,7 @@ export default function Hero() {
             </motion.div>
 
             <motion.div
-              whileHover={{ y: -3, scale: 1.04 }}
+              whileHover={{ y: -2 }}
               whileTap={{ scale: 0.97 }}
             >
               <Link href="/contact" className="btn-outline btn-compact hero-secondary-btn">
@@ -128,12 +126,6 @@ export default function Hero() {
           className="hero-visual"
         >
           <motion.div
-            animate={{ y: [0, -7, 0] }}
-            transition={{
-              duration: 5.5,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
             className="hero-simple-card"
           >
             <div className="hero-simple-photo">

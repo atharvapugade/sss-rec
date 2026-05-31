@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
@@ -41,6 +44,46 @@ const quickNeeds = [
 ];
 
 export default function ContactPage() {
+  const [statusMessage, setStatusMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setIsSubmitting(true);
+    setStatusMessage("");
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const payload = {
+      name: formData.get("name"),
+      phone: formData.get("phone"),
+      email: formData.get("email"),
+      reason: formData.get("reason"),
+      message: formData.get("message"),
+    };
+
+    try {
+      const response = await fetch("/api/contact-enquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Submission failed.");
+      }
+
+      form.reset();
+      setStatusMessage("Message submitted successfully.");
+    } catch (error) {
+      setStatusMessage(error.message || "Something went wrong.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -101,27 +144,27 @@ export default function ContactPage() {
                 <p>Write your message and we will reply as soon as possible.</p>
               </div>
 
-              <form className="contact-form">
+              <form className="contact-form" onSubmit={handleSubmit}>
                 <div className="contact-field-row">
                   <label>
                     Full Name
-                    <input type="text" placeholder="Enter your name" />
+                    <input name="name" type="text" placeholder="Enter your name" required />
                   </label>
 
                   <label>
                     Phone Number
-                    <input type="tel" placeholder="Enter phone number" />
+                    <input name="phone" type="tel" placeholder="Enter phone number" />
                   </label>
                 </div>
 
                 <label>
                   Email Address
-                  <input type="email" placeholder="Enter email address" />
+                  <input name="email" type="email" placeholder="Enter email address" required />
                 </label>
 
                 <label>
                   Reason for Contact
-                  <select defaultValue="">
+                  <select name="reason" defaultValue="" required>
                     <option value="" disabled>
                       Select a reason
                     </option>
@@ -135,13 +178,19 @@ export default function ContactPage() {
                 <label>
                   Your Message
                   <textarea
+                    name="message"
                     rows="5"
                     placeholder="Type your message here"
+                    required
                   />
                 </label>
 
-                <button type="button" className="btn-primary contact-submit">
-                  Send Message <FaPaperPlane />
+                {statusMessage && (
+                  <p className="contact-form-message">{statusMessage}</p>
+                )}
+
+                <button type="submit" className="btn-primary contact-submit" disabled={isSubmitting}>
+                  {isSubmitting ? "Sending..." : "Send Message"} <FaPaperPlane />
                 </button>
               </form>
             </div>

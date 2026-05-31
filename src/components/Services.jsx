@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import HireServiceModal from "@/components/HireServiceModal";
 import {
   FaUserTie,
   FaBaby,
@@ -13,34 +14,32 @@ const container = {
   show: {
     opacity: 1,
     transition: {
-      delayChildren: 0.12,
-      staggerChildren: 0.16,
+      delayChildren: 0.04,
+      staggerChildren: 0.08,
     },
   },
 };
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 34, scale: 0.96 },
+  hidden: { opacity: 0, y: 18 },
   show: {
     opacity: 1,
     y: 0,
-    scale: 1,
     transition: {
-      duration: 0.75,
-      ease: [0.25, 0.1, 0.25, 1],
+      duration: 0.42,
+      ease: "easeOut",
     },
   },
 };
 
 const headerReveal = {
-  hidden: { opacity: 0, y: 26, filter: "blur(8px)" },
+  hidden: { opacity: 0, y: 16 },
   show: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
     transition: {
-      duration: 0.8,
-      ease: [0.25, 0.1, 0.25, 1],
+      duration: 0.42,
+      ease: "easeOut",
     },
   },
 };
@@ -102,9 +101,8 @@ export default function Services() {
                 key={i}
                 variants={fadeUp}
                 whileHover={{
-                  y: -10,
-                  scale: 1.035,
-                  transition: { duration: 0.28, ease: "easeOut" },
+                  y: -5,
+                  transition: { duration: 0.18, ease: "easeOut" },
                 }}
                 whileTap={{ scale: 0.98 }}
                 className="service-card group flex min-h-[280px] w-full max-w-[290px] flex-col justify-center px-6"
@@ -118,6 +116,14 @@ export default function Services() {
                 <p className="text-xs text-gray-500 mt-3 leading-relaxed px-2">
                   {s.desc}
                 </p>
+
+                <HireServiceModal
+                  serviceName={s.title}
+                  buttonLabel={`Hire ${s.title}`}
+                  buttonClassName="service-card-popup-trigger"
+                  ariaLabel={`Open hire form for ${s.title}`}
+                  showArrow={false}
+                />
               </motion.div>
             ))}
           </motion.div>
